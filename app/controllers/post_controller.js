@@ -1,17 +1,55 @@
 import Post from '../models/post_model';
 
 export const createPost = (req, res) => {
-  res.send('post should be created here');
+  const post = new Post();
+  post.title = req.body.title;
+  post.tags = req.body.tags;
+  post.content = req.body.content;
+  post.save()
+  .then(result => {
+    res.json({ message: 'Post created!' });
+  })
+  .catch(error => {
+    res.json({ error });
+  });
 };
+
+// still need to sort results for this + handle errors overall ?
 export const getPosts = (req, res) => {
-  res.send('posts should be returned');
+  Post.find({}, '_id title tags',
+    (err, docs) => {
+      const cleanPosts = (posts) => {
+        return posts.map(post => {
+          return { id: post._id, title: post.title, tags: post.tags };
+        });
+      };
+
+      const cleanedPosts = cleanPosts(docs);
+
+      res.json(cleanedPosts);
+    });
 };
+
 export const getPost = (req, res) => {
-  res.send('single post looked up');
+  Post.findById(req.params.id, '_id title tags content',
+    (err, docs) => {
+      const cleanedPosts = { id: docs._id, title: docs.title, tags: docs.tags };
+      res.json(cleanedPosts);
+    });
 };
+
 export const deletePost = (req, res) => {
-  res.send('delete a post here');
+  Post.remove({ _id: req.params.id },
+    (err) => {
+      res.send(err);
+    });
 };
+
 export const updatePost = (req, res) => {
-  res.send('update a post here');
+  Post.update({ _id: req.params.id }, { title: req.body.title, tags: req.body.tags, content: req.body.content },
+    (err, raw) => {
+      if (err) {
+        res.send(err);
+      }
+    });
 };

@@ -10,6 +10,8 @@ mongoose.connect(mongoURI);
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
 
+// debugging
+mongoose.set('debug', true);
 
 // initialize
 const app = express();
