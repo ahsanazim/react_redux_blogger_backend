@@ -33,7 +33,7 @@ export const getPosts = (req, res) => {
 export const getPost = (req, res) => {
   Post.findById(req.params.id, '_id title tags content',
     (err, docs) => {
-      const cleanedPosts = { id: docs._id, title: docs.title, tags: docs.tags };
+      const cleanedPosts = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content };
       res.json(cleanedPosts);
     });
 };
