@@ -54,7 +54,7 @@ export const updatePost = (req, res) => {
       Post.findById(req.params.id, '_id title tags content',
         (err, docs) => {
           const updatedPost = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content };
-          res.json(updatedPost);
+          res.json(docs);
         });
     });
 };
