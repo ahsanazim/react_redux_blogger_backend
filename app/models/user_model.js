@@ -11,7 +11,7 @@ UserSchema.set('toJSON', {
   virtuals: true,
 });
 
-UserSchema.pre('save', (next) => {
+UserSchema.pre('save', function beforeyYourModelSave(next) {
   // this is a reference to our model
   // the function runs in some other context so DO NOT bind it
   const user = this;
@@ -27,7 +27,7 @@ UserSchema.pre('save', (next) => {
     bcrypt.hash(user.password, salt, null, (err, hash) => {
       if (err) { return next(err); }
 
-      // overwrite plain text password with encrypted password
+      // overwrite plain text password with encrypted (hashed) password
       user.password = hash;
       return next();
     });

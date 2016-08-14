@@ -14,15 +14,24 @@ router.post('/signin', requireSignin, UserController.signin);
 
 router.post('/signup', UserController.signup);
 
-router.post(requireAuth, Posts.createPost);
+// router.route('/posts')
+//   .post(Posts.createPost)
+//   .get(Posts.getPosts);
+//
+// router.route('/posts/:id')
+//   .put(Posts.updatePost)
+//   .get(Posts.getPost)
+//   .delete(Posts.deletePost);
 
 router.route('/posts')
-  .post(Posts.createPost)
+  .post(requireAuth, Posts.createPost)
   .get(Posts.getPosts);
 
 router.route('/posts/:id')
-  .put(Posts.updatePost)
+  .put(requireAuth, Posts.updatePost)
   .get(Posts.getPost)
-  .delete(Posts.deletePost);
+  .delete(requireAuth, Posts.deletePost);
+
+// same as before:
 
 export default router;
