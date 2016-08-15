@@ -6,8 +6,6 @@ export const createPost = (req, res) => {
   post.tags = req.body.tags;
   post.content = req.body.content;
   post.author = req.user.username;
-  console.log('user object: ------');
-  console.log(req.user);
   post.save()
   .then(result => {
     res.json({ message: 'Post created!' });
@@ -26,8 +24,6 @@ export const getPosts = (req, res) => {
           return { id: post._id, title: post.title, tags: post.tags, author: post.author };
         });
       };
-      console.log('getPosts:');
-      console.log(docs);
 
       const cleanedPosts = cleanPosts(docs);
 
@@ -38,8 +34,6 @@ export const getPosts = (req, res) => {
 export const getPost = (req, res) => {
   Post.findById(req.params.id, '_id title tags content author',
     (err, docs) => {
-      console.log('getPost:');
-      console.log(docs);
       const cleanedPosts = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content, author: docs.author };
       res.json(cleanedPosts);
     });
@@ -53,7 +47,18 @@ export const deletePost = (req, res) => {
 };
 
 export const updatePost = (req, res) => {
+  console.log(req.user.username);
   if ((req.body.title === '') || (req.body.tags === '') || (req.body.content === '')) {
+    Post.findById(req.params.id, '_id title tags content',
+      (err, docs) => {
+        if (err) {
+          res.send(err);
+        }
+        const updatedPost = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content };
+        res.json(updatedPost);
+      });
+  } else if (req.body.author !== req.user.username) {
+    console.log('different');
     Post.findById(req.params.id, '_id title tags content',
       (err, docs) => {
         if (err) {
