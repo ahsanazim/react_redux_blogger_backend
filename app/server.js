@@ -23,6 +23,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+console.log(process.env.API_SECRET);
+
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', apiRouter);
@@ -30,8 +32,6 @@ app.use('/api/posts/:id', apiRouter);
 app.use('/api/posts', apiRouter);
 app.use('/api/signin', apiRouter);
 app.use('/api/signup', apiRouter);
-
-console.log(process.env.API_SECRET);
 
 // default index route
 app.get('/', (req, res) => {
