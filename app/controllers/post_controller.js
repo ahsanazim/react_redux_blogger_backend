@@ -47,9 +47,6 @@ export const deletePost = (req, res) => {
 };
 
 export const updatePost = (req, res) => {
-  console.log('LOGGING UPDATE');
-  console.log(req.user.username);
-  console.log(req.body.author);
   if ((req.body.title === '') || (req.body.tags === '') || (req.body.content === '')) {
     Post.findById(req.params.id, '_id title tags content',
       (err, docs) => {
@@ -59,31 +56,34 @@ export const updatePost = (req, res) => {
         const updatedPost = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content };
         res.json(updatedPost);
       });
-  } else if (req.body.author !== req.user.username) {
-    console.log('different');
-    Post.findById(req.params.id, '_id title tags content',
+  } else {
+    let matches = true;
+    Post.findById(req.params.id, '_id title tags content author',
       (err, docs) => {
         if (err) {
           res.send(err);
         }
-        const updatedPost = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content };
-        res.json(updatedPost);
-      });
-  } else {
-    console.log('same');
-    Post.update({ _id: req.params.id }, { title: req.body.title, tags: req.body.tags, content: req.body.content },
-      (err, raw) => {
-        if (err) {
-          res.send(err);
+        if (docs.author !== req.user.username) {
+          matches = false;
+          const updatedPost = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content };
+          res.json(updatedPost);
         }
-        Post.findById(req.params.id, '_id title tags content',
-          (err, docs) => {
+      });
+    if (matches) {
+      Post.update({ _id: req.params.id }, { title: req.body.title, tags: req.body.tags, content: req.body.content },
+          (err, raw) => {
             if (err) {
               res.send(err);
             }
-            const updatedPost = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content };
-            res.json(updatedPost);
+            Post.findById(req.params.id, '_id title tags content',
+              (err, docs) => {
+                if (err) {
+                  res.send(err);
+                }
+                const updatedPost = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content };
+                res.json(updatedPost);
+              });
           });
-      });
+    }
   }
 };
