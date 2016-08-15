@@ -9,6 +9,8 @@ dotenv.config({ silent: true });
 
 // encodes a new token for a user object
 function tokenForUser(user) {
+  console.log('logging secret');
+  console.log(process.env.API_SECRET);
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.API_SECRET);
 }
