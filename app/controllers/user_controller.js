@@ -2,7 +2,6 @@ import jwt from 'jwt-simple';
 import User from '../models/user_model';
 // import config from '../config.js';
 
-
 import dotenv from 'dotenv';
 
 dotenv.config({ silent: true });

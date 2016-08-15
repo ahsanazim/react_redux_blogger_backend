@@ -28,6 +28,8 @@ app.use(bodyParser.json());
 app.use('/api', apiRouter);
 app.use('/api/posts/:id', apiRouter);
 app.use('/api/posts', apiRouter);
+app.use('/api/signin', apiRouter);
+app.use('/api/signup', apiRouter);
 
 
 // default index route
