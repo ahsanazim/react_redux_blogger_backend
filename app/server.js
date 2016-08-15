@@ -19,9 +19,6 @@ const app = express();
 // enable/disable cross origin resource sharing if necessary
 app.use(cors());
 
-console.log('logging secret');
-console.log(process.env.API_SECRET);
-
 // enable json message body for posting data to API
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
