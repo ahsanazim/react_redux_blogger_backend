@@ -31,6 +31,7 @@ app.use('/api/posts', apiRouter);
 app.use('/api/signin', apiRouter);
 app.use('/api/signup', apiRouter);
 
+console.log(process.env.API_SECRET);
 
 // default index route
 app.get('/', (req, res) => {
