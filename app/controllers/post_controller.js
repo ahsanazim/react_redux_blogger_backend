@@ -5,6 +5,9 @@ export const createPost = (req, res) => {
   post.title = req.body.title;
   post.tags = req.body.tags;
   post.content = req.body.content;
+  post.author = req.user.username;
+  console.log('user object: ------');
+  console.log(req.user);
   post.save()
   .then(result => {
     res.json({ message: 'Post created!' });
@@ -16,13 +19,15 @@ export const createPost = (req, res) => {
 
 // still need to sort results for this + handle errors overall ?
 export const getPosts = (req, res) => {
-  Post.find({}, '_id title tags',
+  Post.find({}, '_id title tags author',
     (err, docs) => {
       const cleanPosts = (posts) => {
         return posts.map(post => {
-          return { id: post._id, title: post.title, tags: post.tags };
+          return { id: post._id, title: post.title, tags: post.tags, author: post.author };
         });
       };
+      console.log('getPosts:');
+      console.log(docs);
 
       const cleanedPosts = cleanPosts(docs);
 
@@ -31,9 +36,11 @@ export const getPosts = (req, res) => {
 };
 
 export const getPost = (req, res) => {
-  Post.findById(req.params.id, '_id title tags content',
+  Post.findById(req.params.id, '_id title tags content author',
     (err, docs) => {
-      const cleanedPosts = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content };
+      console.log('getPost:');
+      console.log(docs);
+      const cleanedPosts = { id: docs._id, title: docs.title, tags: docs.tags, content: docs.content, author: docs.author };
       res.json(cleanedPosts);
     });
 };
