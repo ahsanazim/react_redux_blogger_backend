@@ -47,7 +47,9 @@ export const deletePost = (req, res) => {
 };
 
 export const updatePost = (req, res) => {
+  console.log('LOGGING UPDATE');
   console.log(req.user.username);
+  console.log(req.body.author);
   if ((req.body.title === '') || (req.body.tags === '') || (req.body.content === '')) {
     Post.findById(req.params.id, '_id title tags content',
       (err, docs) => {
@@ -68,6 +70,7 @@ export const updatePost = (req, res) => {
         res.json(updatedPost);
       });
   } else {
+    console.log('same');
     Post.update({ _id: req.params.id }, { title: req.body.title, tags: req.body.tags, content: req.body.content },
       (err, raw) => {
         if (err) {
