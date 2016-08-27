@@ -6,6 +6,7 @@ const PostSchema = new Schema({
   tags: String,
   content: String,
   author: String,
+  image: String,
 });
 
 // for search functionality
