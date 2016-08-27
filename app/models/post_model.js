@@ -8,6 +8,9 @@ const PostSchema = new Schema({
   author: String,
 });
 
+// for search functionality
+PostSchema.index({ tags: 'text' });
+
 // create model class
 const PostModel = mongoose.model('Post', PostSchema);
 

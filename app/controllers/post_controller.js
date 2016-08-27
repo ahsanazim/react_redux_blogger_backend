@@ -46,6 +46,18 @@ export const deletePost = (req, res) => {
     });
 };
 
+// returns array of docs with search query in tags field
+export const search = (req, res) => {
+  Post.find({ $text: { $search: req.params.query } },
+    (err, docs) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(docs);
+      }
+    });
+};
+
 export const updatePost = (req, res) => {
   if ((req.body.title === '') || (req.body.tags === '') || (req.body.content === '')) {
     Post.findById(req.params.id, '_id title tags content',

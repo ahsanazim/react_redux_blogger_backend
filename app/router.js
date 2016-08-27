@@ -19,6 +19,9 @@ router.route('/posts/:id')
   .get(Posts.getPost)
   .delete(requireAuth, Posts.deletePost);
 
+router.route('/search/:query')
+  .get(Posts.search);
+
 router.post('/signin', requireSignin, UserController.signin);
 router.post('/signup', UserController.signup);
 
