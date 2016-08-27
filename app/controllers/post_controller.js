@@ -48,12 +48,20 @@ export const deletePost = (req, res) => {
 
 // returns array of docs with search query in tags field
 export const search = (req, res) => {
-  Post.find({ $text: { $search: req.params.query } },
+  Post.find({ $text: { $search: req.params.query } }, '_id title tags author',
     (err, docs) => {
       if (err) {
         res.send(err);
       } else {
-        res.json(docs);
+        const cleanPosts = (posts) => {
+          return posts.map(post => {
+            return { id: post._id, title: post.title, tags: post.tags, author: post.author };
+          });
+        };
+
+        const cleanedPosts = cleanPosts(docs);
+
+        res.json(cleanedPosts);
       }
     });
 };
