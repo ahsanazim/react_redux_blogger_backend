@@ -1,5 +1,6 @@
 import Post from '../models/post_model';
 import { incrmntNumPosts } from './user_controller.js';
+import { createTag } from './tag_controller.js';
 import AWS from 'aws-sdk';
 
 // import config from '../config'; --> not used
@@ -21,6 +22,7 @@ export const createPost = (req, res) => {
   post.save()
   .then(result => {
     incrmntNumPosts(req.user.username);
+    createTag(req.body.tags);
     res.json(result);
   })
   .catch(error => {

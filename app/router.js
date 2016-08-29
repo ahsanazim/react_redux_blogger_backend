@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as Posts from './controllers/post_controller';
 import * as UserController from './controllers/user_controller';
+import * as TagController from './controllers/tag_controller';
 import { requireAuth, requireSignin } from './services/passport';
 
 
@@ -23,6 +24,8 @@ router.route('/search/:query')
   .get(Posts.search);
 
 router.get('/user/:username', UserController.getProfile);
+
+router.get('/tags', TagController.getTags);
 
 router.post('/images', Posts.getSignedRequest);   // get S3 signed request for new image
 
