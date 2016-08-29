@@ -22,6 +22,8 @@ router.route('/posts/:id')
 router.route('/search/:query')
   .get(Posts.search);
 
+router.get('/user/:username', UserController.getProfile);
+
 router.post('/images', Posts.getSignedRequest);   // get S3 signed request for new image
 
 router.post('/signin', requireSignin, UserController.signin);
